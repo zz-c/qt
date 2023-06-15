@@ -23,6 +23,7 @@ set(PROJECT_SOURCES
         About.cpp
         ComLineWidget.h
         ComLineWidget.cpp
+        res.qrc
 )
 #include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 #aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/src PROJECT_SOURCES)
