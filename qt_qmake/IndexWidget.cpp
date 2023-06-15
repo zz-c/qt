@@ -41,7 +41,6 @@ QWidget* IndexWidget::initLeftWidget(){
         About dlg(this);
         dlg.exec();
     });
-
     QAction *logoutAct = settingsMenu->addAction("退出");
     logoutAct->setShortcuts(QKeySequence::Quit);
     connect(logoutAct, &QAction::triggered, this, [this]() {

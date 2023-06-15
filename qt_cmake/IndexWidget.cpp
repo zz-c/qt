@@ -4,6 +4,7 @@
 #include <QAction>
 #include <QMessageBox>
 #include <QHBoxLayout>
+#include "About.h"
 
 IndexWidget::IndexWidget(QWidget *parent) : QWidget(parent)
 {
@@ -34,7 +35,12 @@ QWidget* IndexWidget::initLeftWidget(){
     // 文件菜单
     QMenu *settingsMenu = new QMenu(this);
 
-
+    QAction *aboutAct = settingsMenu->addAction("关于");
+    aboutAct->setShortcuts(QKeySequence::Preferences);
+    connect(aboutAct, &QAction::triggered, this, [this]() {
+        About dlg(this);
+        dlg.exec();
+    });
     QAction *logoutAct = settingsMenu->addAction("退出");
     logoutAct->setShortcuts(QKeySequence::Quit);
     connect(logoutAct, &QAction::triggered, this, [this]() {
