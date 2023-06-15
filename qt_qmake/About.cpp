@@ -47,7 +47,7 @@ void About::initTopUi(){
     logoHLayout->setContentsMargins(0,0,0,0);
 
     QLabel *logo = new QLabel(logoWidget);
-    logo->setPixmap(QIcon(":/res/images/logo.png").pixmap(36,40));
+    logo->setPixmap(QIcon(":/images/logo.png").pixmap(36,40));
 
     QLabel *nameLabel = new QLabel(logoWidget);
     nameLabel->setStyleSheet(".QLabel{color:rgb(0,0,0);font-family:Microsoft YaHei;font-size:30px;}");
