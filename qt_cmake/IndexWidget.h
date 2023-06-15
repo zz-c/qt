@@ -2,6 +2,7 @@
 #define INDEXWIDGET_H
 
 #include <QWidget>
+#include <QPushButton>
 
 namespace Ui {
 class IndexWidget;
@@ -16,7 +17,12 @@ public:
     ~IndexWidget();
 
 private:
-    Ui::IndexWidget *ui;
+    void initUi();
+    void initSettings();
+    QWidget* initLeftWidget();
+    QWidget* initRightWidget();
+    QPushButton *recordBtn;
+
 };
 
-#endif // INDEXWIDGET_H
+#endif

@@ -18,7 +18,6 @@ HEADERS += \
     mainwindow.h
 
 FORMS += \
-    IndexWidget.ui \
     mainwindow.ui
 
 # Default rules for deployment.
