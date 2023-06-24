@@ -16,6 +16,8 @@ class UdpClientWidget : public QWidget
     Q_OBJECT
 public:
     explicit UdpClientWidget(QWidget *parent);
+public slots:
+    void onSocketReadyRead();//读取socket传入的数据
 private:
     QLabel *infolabel;
     QLabel *countLabel;
@@ -24,9 +26,7 @@ private:
 
     QUdpSocket *udpSocket;//
     QString getLocalIP();//获取本机IP地址
-signals:
-    //void onSocketReadyRead();//读取socket传入的数据
-    //void on_pushButton_clicked();
+
 };
 
 #endif // UdpClientWidget_H
