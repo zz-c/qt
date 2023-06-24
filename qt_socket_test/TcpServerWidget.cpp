@@ -2,6 +2,9 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QLineEdit>
+#include <QSettings>
+#include <QFileDialog>
 
 TcpServerWidget::TcpServerWidget(QWidget *parent) : QWidget(parent)
 {
@@ -25,10 +28,48 @@ TcpServerWidget::TcpServerWidget(QWidget *parent) : QWidget(parent)
     recordHLayout->setContentsMargins(0,0,0,0);
     recordHLayout->setSpacing(0);
 
+    QLabel *fileNameLabel = new QLabel(this);
+    fileNameLabel->setFixedWidth(60);
+    fileNameLabel->setStyleSheet(".QLabel{color:rgb(255,255,255);font-size:15px;}");
+    fileNameLabel->setText("文件路径");
+
+    QLineEdit *fileLineEdit = new QLineEdit(this);
+    fileLineEdit->setFixedHeight(32);
+    fileLineEdit->setPlaceholderText("请输入文件路径");
+    fileLineEdit->setStyleSheet(".QLineEdit{color:rgb(0,0,0);font-size:15px;border:1px solid rgb(217,217,217);border-radius: 3px; padding: 1px;}\
+                               .QLineEdit:hover {border:1px solid rgb(64,65,66);}");
+    fileLineEdit->setClearButtonEnabled(true);
+    fileLineEdit->setFocusPolicy(Qt::FocusPolicy::ClickFocus);
+    //dirLineEdit->setText(SingletonUtils::getInstance()->getRecordDir());
+    fileLineEdit->setCursorPosition(0);
+
+    QPushButton *fileBtn= new QPushButton(this);
+    fileBtn->setStyleSheet( ".QPushButton {color:rgb(64,65,66);font-family:Microsoft YaHei;font-size:14px;background-color:white; border:1px solid rgb(64,65,66); padding: 0px;}\
+                           .QPushButton:pressed {background-color: rgba(240,240,240,0.8);}\
+                           .QPushButton:hover {background-color: rgba(240,240,240,0.4); border-color:rgba(64,65,66,0.5);}\
+                           .QPushButton:focus{outline: none;}");
+    fileBtn->setFixedSize(100,40);
+    fileBtn->setText("选择");
+    connect(fileBtn,&QPushButton::clicked,this,[this,fileLineEdit](){
+        //QString dirVal = QFileDialog::getExistingDirectory(this,"浏览","").trimmed();
+        QString dirVal = QFileDialog::getOpenFileName(this, "选择要播放的文件","/","视频文件 (*.h264 *.flv *.rmvb *.avi *.mp4);; 所有文件 (*.*);; ");
+        if(dirVal.length()>0){
+            fileLineEdit->setText(dirVal);
+            fileLineEdit->setCursorPosition(0);
+            QSettings settings;
+            settings.setValue("SETTINGS",dirVal);
+        }
+
+    });
+
     startBtn = new QPushButton(recordWidget);
     startBtn->setFixedSize(120,40);
     startBtn->setCursor(Qt::PointingHandCursor);
     startBtn->setText("开始");
+
+    recordHLayout->addWidget(fileNameLabel);
+    recordHLayout->addWidget(fileLineEdit);
+    recordHLayout->addWidget(fileBtn);
     recordHLayout->addWidget(startBtn);
 
 
