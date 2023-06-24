@@ -15,8 +15,8 @@ TcpClientWidget::TcpClientWidget(QWidget *parent) : QWidget(parent)
     infolabel->setText("输入ip并点击开始");
 
     countLabel = new QLabel(this);
-    countLabel->setStyleSheet(".QLabel{color:rgb(0,0,0);font-family:Microsoft YaHei;font-size:14px;}");
-    countLabel->setText(QString("当前版本 "));
+    countLabel->setStyleSheet(".QLabel{color:rgb(255,255,255);font-family:Microsoft YaHei;font-size:14px;}");
+    countLabel->setText(QString("统计数据 "));
 
 
     QWidget * recordWidget = new QWidget(this);
@@ -28,17 +28,17 @@ TcpClientWidget::TcpClientWidget(QWidget *parent) : QWidget(parent)
     QLabel *fileNameLabel = new QLabel(this);
     fileNameLabel->setFixedWidth(60);
     fileNameLabel->setStyleSheet(".QLabel{color:rgb(255,255,255);font-size:15px;}");
-    fileNameLabel->setText("文件路径");
+    fileNameLabel->setText("ip");
 
-    fileLineEdit = new QLineEdit(this);
-    fileLineEdit->setFixedHeight(32);
-    fileLineEdit->setPlaceholderText("请输入文件路径");
-    fileLineEdit->setStyleSheet(".QLineEdit{color:rgb(0,0,0);font-size:15px;border:1px solid rgb(217,217,217);border-radius: 3px; padding: 1px;}\
+    ipLineEdit = new QLineEdit(this);
+    ipLineEdit->setFixedHeight(32);
+    ipLineEdit->setPlaceholderText("请输入服务端ip");
+    ipLineEdit->setStyleSheet(".QLineEdit{color:rgb(0,0,0);font-size:15px;border:1px solid rgb(217,217,217);border-radius: 3px; padding: 1px;}\
                                .QLineEdit:hover {border:1px solid rgb(64,65,66);}");
-    fileLineEdit->setClearButtonEnabled(true);
-    fileLineEdit->setFocusPolicy(Qt::FocusPolicy::ClickFocus);
-    //dirLineEdit->setText(SingletonUtils::getInstance()->getRecordDir());
-    fileLineEdit->setCursorPosition(0);
+    ipLineEdit->setClearButtonEnabled(true);
+    ipLineEdit->setFocusPolicy(Qt::FocusPolicy::ClickFocus);
+    ipLineEdit->setCursorPosition(0);
+    ipLineEdit->setText("127.0.0.1");
 
     startBtn = new QPushButton(recordWidget);
     startBtn->setFixedSize(120,40);
@@ -48,13 +48,15 @@ TcpClientWidget::TcpClientWidget(QWidget *parent) : QWidget(parent)
         //创建套接字
         m_client = new QTcpSocket(this);
         //连接服务器
-        m_client->connectToHost(QHostAddress("127.0.0.1"), 9999);
+        QString ip = ipLineEdit->text();
+        m_client->connectToHost(QHostAddress(ip), 9999);
+        infolabel->setText(ip+"已连接");
         //通过信号接收服务器数据
         connect(m_client, &QTcpSocket::readyRead, this, &TcpClientWidget::slotReadyRead);
     });
 
     recordHLayout->addWidget(fileNameLabel);
-    recordHLayout->addWidget(fileLineEdit);
+    recordHLayout->addWidget(ipLineEdit);
     recordHLayout->addWidget(startBtn);
 
 
@@ -78,6 +80,14 @@ void TcpClientWidget::slotReadyRead()
     QByteArray array = m_client->readAll();
     //QMessageBox::information(this, "Server Message", array);
     qDebug()<<"TcpClient read:"<<array;
+    packetNumCount++;
+    QString countInfo="已接收:";
+    countInfo.append(QString::number(packetNumCount, 10));
+    countInfo.append(",大小:");
+    packetSizeCount += array.size();
+    countInfo.append(QString::number(packetSizeCount, 10));
+
+    countLabel->setText(countInfo);
 }
 
 

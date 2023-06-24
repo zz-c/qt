@@ -85,6 +85,7 @@ TcpServerWidget::TcpServerWidget(QWidget *parent) : QWidget(parent)
 
             //通过信号接收客户端请求
             connect(m_server, &QTcpServer::newConnection, this, &TcpServerWidget::slotNewConnection);
+            infolabel->setText("已建立服务端监听");
         }
 
     });
@@ -147,13 +148,19 @@ void WorkerThread::run(){
      死循环，让线程一直跑。或者处理完毕就退出
      */
     int n =0;
+    size_t size = 1000;
+    char buffer[size];
+    memset(buffer, 0, size);
     while(n<10){
         qDebug()<<n<<"WorkerThread zzrun: threadId: "<<QThread::currentThreadId();
-        this->m_client->write("connect successzz!!!");
+        //this->m_client->write("connect successzz!!!");
+        //const void* buffer = (char*)malloc(1000);
+        this->m_client->write(buffer,size);
         m_client->flush();
         n++;
         QThread::msleep(1000);
     }
+    //free(buffer);
 
     //emit sigResult();
 }

@@ -19,8 +19,10 @@ public slots:
 private:
     QLabel *infolabel;
     QLabel *countLabel;
+    int packetNumCount = 0;
+    int packetSizeCount = 0;
     QPushButton *startBtn;
-    QLineEdit *fileLineEdit;
+    QLineEdit *ipLineEdit;
     QTcpSocket* m_client;
 signals:
 
