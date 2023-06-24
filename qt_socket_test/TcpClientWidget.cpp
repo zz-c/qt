@@ -79,7 +79,7 @@ void TcpClientWidget::slotReadyRead()
     //接收数据
     QByteArray array = m_client->readAll();
     //QMessageBox::information(this, "Server Message", array);
-    qDebug()<<"TcpClient read:"<<array;
+    //qDebug()<<"TcpClient read:"<<array;
     packetNumCount++;
     QString countInfo="已接收:";
     countInfo.append(QString::number(packetNumCount, 10));

@@ -152,7 +152,9 @@ void WorkerThread::run(){
     char buffer[size];
     memset(buffer, 0, size);
     while(n<10){
-        qDebug()<<n<<"WorkerThread zzrun: threadId: "<<QThread::currentThreadId();
+        QDateTime now = QDateTime::currentDateTime();  // 获取当前时间
+        //uint time_t = now.toTime_t();
+        qDebug()<<n<<"WorkerThread zzrun: threadId: "<<QThread::currentThreadId()<<"time_t"<<std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
         //this->m_client->write("connect successzz!!!");
         //const void* buffer = (char*)malloc(1000);
         this->m_client->write(buffer,size);
