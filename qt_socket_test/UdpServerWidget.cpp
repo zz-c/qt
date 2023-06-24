@@ -98,7 +98,7 @@ void WorkerUdpThread::run(){
     int n =0;
     size_t size = 10000;
     char buffer[size];
-    memset(buffer, 1, size);
+    memset(buffer, 0, size);
     while(n<10){
         //qDebug()<<"UdpServerWidget::run "<<n;
         quint16 targetPort = 9998;  //目标端口号
@@ -107,7 +107,7 @@ void WorkerUdpThread::run(){
         long long currentTime = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count()/1000;
         qDebug()<<n<<"WorkerThread zzrun: threadId: "<<QThread::currentThreadId()<<"time_t"<<currentTime<<"sizeof buffer"<<sizeof(buffer);
         sprintf(buffer,"%lld",currentTime);
-        udpSocket->writeDatagram(buffer, this->qHostAddress, targetPort);  //发送函数
+        udpSocket->writeDatagram(buffer, size, this->qHostAddress, targetPort);  //发送函数
         n++;
         QThread::msleep(1000);
     }
