@@ -11,11 +11,11 @@ TcpClientWidget::TcpClientWidget(QWidget *parent) : QWidget(parent)
     mainVLayout->setSpacing(0);
 
     infolabel = new QLabel(this);
-    infolabel->setStyleSheet(".QLabel{color:rgb(255,255,255);}");
+    infolabel->setStyleSheet(".QLabel{color:rgb(255,255,255);font-size:34px;}");
     infolabel->setText("输入ip并点击开始");
 
     countLabel = new QLabel(this);
-    countLabel->setStyleSheet(".QLabel{color:rgb(255,255,255);font-family:Microsoft YaHei;font-size:14px;}");
+    countLabel->setStyleSheet(".QLabel{color:rgb(255,255,255);font-family:Microsoft YaHei;font-size:34px;}");
     countLabel->setText(QString("统计数据 "));
 
 
@@ -76,17 +76,23 @@ TcpClientWidget::TcpClientWidget(QWidget *parent) : QWidget(parent)
 
 void TcpClientWidget::slotReadyRead()
 {
+    long long currentTime = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count()/1000;
+    long long sendTime;
     //接收数据
     QByteArray array = m_client->readAll();
+    sscanf(array,"%lld",&sendTime); //注意此处有&
     //QMessageBox::information(this, "Server Message", array);
-    //qDebug()<<"TcpClient read:"<<array;
+    long long delayTime = currentTime - sendTime;
+    qDebug()<<"TcpClient read:"<<sendTime<<"delayTime"<<delayTime;
+    avgDelayTime = (avgDelayTime*packetNumCount+delayTime)/(packetNumCount+1);
     packetNumCount++;
     QString countInfo="已接收:";
     countInfo.append(QString::number(packetNumCount, 10));
     countInfo.append(",大小:");
     packetSizeCount += array.size();
     countInfo.append(QString::number(packetSizeCount, 10));
-
+    countInfo.append(",平均延迟:");
+    countInfo.append(QString::number(avgDelayTime, 10));
     countLabel->setText(countInfo);
 }
 

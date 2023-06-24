@@ -21,6 +21,7 @@ private:
     QLabel *countLabel;
     int packetNumCount = 0;
     int packetSizeCount = 0;
+    long long avgDelayTime = 0;
     QPushButton *startBtn;
     QLineEdit *ipLineEdit;
     QTcpSocket* m_client;

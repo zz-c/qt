@@ -20,12 +20,12 @@ TcpServerWidget::TcpServerWidget(QWidget *parent) : QWidget(parent)
     mainVLayout->setSpacing(0);
 
     infolabel = new QLabel(this);
-    infolabel->setStyleSheet(".QLabel{color:rgb(255,255,255);}");
+    infolabel->setStyleSheet(".QLabel{color:rgb(255,255,255);font-size:34px;}");
     infolabel->setText("选择文件并点击开始");
 
     countLabel = new QLabel(this);
-    countLabel->setStyleSheet(".QLabel{color:rgb(0,0,0);font-family:Microsoft YaHei;font-size:14px;}");
-    countLabel->setText(QString("当前版本 "));
+    countLabel->setStyleSheet(".QLabel{color:rgb(255,255,255);font-family:Microsoft YaHei;font-size:34px;}");
+    countLabel->setText(QString("统计数据 "));
 
 
 
@@ -148,21 +148,20 @@ void WorkerThread::run(){
      死循环，让线程一直跑。或者处理完毕就退出
      */
     int n =0;
-    size_t size = 1000;
+    size_t size = 10000;
     char buffer[size];
     memset(buffer, 0, size);
-    while(n<10){
-        QDateTime now = QDateTime::currentDateTime();  // 获取当前时间
-        //uint time_t = now.toTime_t();
-        qDebug()<<n<<"WorkerThread zzrun: threadId: "<<QThread::currentThreadId()<<"time_t"<<std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-        //this->m_client->write("connect successzz!!!");
-        //const void* buffer = (char*)malloc(1000);
+    while(n<150){
+        long long currentTime = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count()/1000;
+        qDebug()<<n<<"WorkerThread zzrun: threadId: "<<QThread::currentThreadId()<<"time_t"<<currentTime<<"sizeof"<<sizeof(long long);
+        sprintf(buffer,"%lld",currentTime);
         this->m_client->write(buffer,size);
         m_client->flush();
         n++;
-        QThread::msleep(1000);
+        QThread::msleep(33);
     }
+    //const void* buffer = (char*)malloc(1000);
     //free(buffer);
-
+    //this->m_client->write("connect successzz!!!");
     //emit sigResult();
 }
