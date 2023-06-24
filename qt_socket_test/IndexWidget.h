@@ -37,7 +37,10 @@ private:
         .QPushButton:focus{outline: none;}";
     QPushButton *tcpServerBtn;
     QPushButton *tcpClientBtn;
-    QPushButton *recordBtn;
+    QPushButton *udpServerBtn;
+    QPushButton *udpClientBtn;
+    QPushButton *udp2ServerBtn;
+    QPushButton *udp2ClientBtn;
 
 
     QStackedWidget *rightStackedWidget;

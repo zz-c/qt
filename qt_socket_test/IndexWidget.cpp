@@ -54,22 +54,40 @@ QWidget* IndexWidget::initLeftWidget(){
     tcpClientBtn->setFixedSize(size);
     tcpClientBtn->setText("TCP CLIENT");
 
-    recordBtn = new QPushButton(widget);
-    recordBtn->setCursor(Qt::PointingHandCursor);
-    recordBtn->setStyleSheet(left_btn_no_background);
-    recordBtn->setFixedSize(size);
-    recordBtn->setText("TCP SERVER");
+    udpServerBtn = new QPushButton(widget);
+    udpServerBtn->setCursor(Qt::PointingHandCursor);
+    udpServerBtn->setStyleSheet(left_btn_no_background);
+    udpServerBtn->setFixedSize(size);
+    udpServerBtn->setText("UDP SERVER");
+
+    udpClientBtn = new QPushButton(widget);
+    udpClientBtn->setCursor(Qt::PointingHandCursor);
+    udpClientBtn->setStyleSheet(left_btn_no_background);
+    udpClientBtn->setFixedSize(size);
+    udpClientBtn->setText("UDP Client");
+
+    udp2ServerBtn = new QPushButton(widget);
+    udp2ServerBtn->setCursor(Qt::PointingHandCursor);
+    udp2ServerBtn->setStyleSheet(left_btn_no_background);
+    udp2ServerBtn->setFixedSize(size);
+    udp2ServerBtn->setText("UDP2 SERVER");
+
+    udp2ClientBtn = new QPushButton(widget);
+    udp2ClientBtn->setCursor(Qt::PointingHandCursor);
+    udp2ClientBtn->setStyleSheet(left_btn_no_background);
+    udp2ClientBtn->setFixedSize(size);
+    udp2ClientBtn->setText("UDP2 Client");
 
     connect(tcpServerBtn,&QPushButton::clicked,this,[this](){
         tcpServerBtn->setStyleSheet(left_btn_no_background_selected);
         tcpClientBtn->setStyleSheet(left_btn_no_background);
-        recordBtn->setStyleSheet(left_btn_no_background);
+        udpServerBtn->setStyleSheet(left_btn_no_background);
         this->rightStackedWidget->setCurrentWidget(tcpServerWidget);
     });
     connect(tcpClientBtn,&QPushButton::clicked,this,[this](){
         tcpServerBtn->setStyleSheet(left_btn_no_background);
         tcpClientBtn->setStyleSheet(left_btn_no_background_selected);
-        recordBtn->setStyleSheet(left_btn_no_background);
+        udpServerBtn->setStyleSheet(left_btn_no_background);
         this->rightStackedWidget->setCurrentWidget(tcpClientWidget);
     });
 
@@ -109,12 +127,19 @@ QWidget* IndexWidget::initLeftWidget(){
     });
 
 
-    widgetVLayout->addSpacing(60);
+    widgetVLayout->addSpacing(20);
     widgetVLayout->addWidget(tcpServerBtn,0,Qt::AlignHCenter);
     widgetVLayout->addSpacing(20);
     widgetVLayout->addWidget(tcpClientBtn,0,Qt::AlignHCenter);
     widgetVLayout->addSpacing(20);
-    widgetVLayout->addWidget(recordBtn,0,Qt::AlignHCenter);
+    widgetVLayout->addWidget(udpServerBtn,0,Qt::AlignHCenter);
+    widgetVLayout->addSpacing(20);
+    widgetVLayout->addWidget(udpClientBtn,0,Qt::AlignHCenter);
+    widgetVLayout->addSpacing(20);
+    widgetVLayout->addWidget(udp2ServerBtn,0,Qt::AlignHCenter);
+    widgetVLayout->addSpacing(20);
+    widgetVLayout->addWidget(udp2ClientBtn,0,Qt::AlignHCenter);
+
     widgetVLayout->addStretch(10);
     widgetVLayout->addWidget(settingsBtn,0,Qt::AlignHCenter);
     widgetVLayout->addSpacing(20);
