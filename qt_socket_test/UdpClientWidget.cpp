@@ -66,21 +66,36 @@ UdpClientWidget::UdpClientWidget(QWidget *parent) : QWidget(parent)
 
 void UdpClientWidget::onSocketReadyRead()
 {
-    while(udpSocket->hasPendingDatagrams())
-    {
+    while(udpSocket->hasPendingDatagrams()){
         QByteArray datagram;
+
         datagram.resize(udpSocket->pendingDatagramSize());  //数据格式统一
 
         QHostAddress peerAddr;
         quint16 peerPort;
-        udpSocket->readDatagram(datagram.data(),
-                                datagram.size(),&peerAddr,&peerPort);   //接收数据
+        udpSocket->readDatagram(datagram.data(),datagram.size(),&peerAddr,&peerPort);   //接收数据
         QString str=datagram.data();    //数据转换为QT的ui界面使用的QString类型
 
-        QString peer="[From "+peerAddr.toString()+":"+QString::number(peerPort)+"] ";
+//        QString peer="[From "+peerAddr.toString()+":"+QString::number(peerPort)+"] ";
+//        countLabel->setText(peer+str);
 
-        //ui->plainTextEdit->appendPlainText(peer+str);
-        countLabel->setText(peer+str);
+        long long currentTime = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count()/1000;
+        long long sendTime;
+        //接收数据
+        qDebug()<<"datagram.size():"<<datagram.size()<<"datagram:"<<datagram;
+        sscanf(datagram,"%lld",&sendTime); //注意此处有&
+        long long delayTime = currentTime - sendTime;
+        qDebug()<<"udpClient read:"<<sendTime<<"delayTime"<<delayTime;
+        avgDelayTime = (avgDelayTime*packetNumCount+delayTime)/(packetNumCount+1);
+        packetNumCount++;
+        QString countInfo="已接收:";
+        countInfo.append(QString::number(packetNumCount, 10));
+        countInfo.append(",大小:");
+        packetSizeCount += datagram.size();
+        countInfo.append(QString::number(packetSizeCount, 10));
+        countInfo.append(",平均延迟:");
+        countInfo.append(QString::number(avgDelayTime, 10));
+        countLabel->setText(countInfo);
     }
 }
 

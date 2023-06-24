@@ -46,14 +46,12 @@ UdpServerWidget::UdpServerWidget(QWidget *parent) : QWidget(parent)
 
     udpSocket=new QUdpSocket(this);//用于与连接的客户端通讯的QTcpSocket
     connect(startBtn,&QPushButton::clicked,this,[this](){
+
         QString targetIP=ipLineEdit->text();
         QHostAddress targetAddr(targetIP);  //目标IP
-        quint16 targetPort = 9998;  //目标端口号
-        QString msg = "发送内容"; //发送内容
-        QByteArray byteArray = msg.toUtf8();
-
-        udpSocket->writeDatagram(byteArray, targetAddr, targetPort);  //发送函数
-
+        WorkerUdpThread *workerUdpThread = new WorkerUdpThread(this);
+        workerUdpThread->init(this->udpSocket,targetAddr);
+        workerUdpThread->start();
 
     });
 
@@ -88,4 +86,29 @@ QString UdpServerWidget::getLocalIP(){
             }
         }
     return localIP;
+}
+WorkerUdpThread::WorkerUdpThread(QObject *parent):QThread(parent){
+
+}
+void WorkerUdpThread::init(QUdpSocket *udpSocket,QHostAddress qHostAddress){
+    this->udpSocket = udpSocket;
+    this->qHostAddress = qHostAddress;
+}
+void WorkerUdpThread::run(){
+    int n =0;
+    size_t size = 10000;
+    char buffer[size];
+    memset(buffer, 1, size);
+    while(n<10){
+        //qDebug()<<"UdpServerWidget::run "<<n;
+        quint16 targetPort = 9998;  //目标端口号
+//        QString msg = "发送内容"; //发送内容
+//        QByteArray byteArray = msg.toUtf8();
+        long long currentTime = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count()/1000;
+        qDebug()<<n<<"WorkerThread zzrun: threadId: "<<QThread::currentThreadId()<<"time_t"<<currentTime<<"sizeof buffer"<<sizeof(buffer);
+        sprintf(buffer,"%lld",currentTime);
+        udpSocket->writeDatagram(buffer, this->qHostAddress, targetPort);  //发送函数
+        n++;
+        QThread::msleep(1000);
+    }
 }

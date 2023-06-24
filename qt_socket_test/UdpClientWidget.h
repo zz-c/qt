@@ -21,6 +21,10 @@ public slots:
 private:
     QLabel *infolabel;
     QLabel *countLabel;
+    int packetNumCount = 0;
+    int packetSizeCount = 0;
+    long long avgDelayTime = 0;
+
     QLineEdit *ipLineEdit;
     QPushButton *startBtn;
 

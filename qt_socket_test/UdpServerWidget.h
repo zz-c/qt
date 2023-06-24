@@ -6,6 +6,7 @@
 #include <QLabel>
 #include <QString>
 #include <QLineEdit>
+#include <QThread>
 #include <QUdpSocket>
 
 class UdpServerWidget : public QWidget
@@ -24,6 +25,25 @@ private:
     QString getLocalIP();//获取本机IP地址
 signals:
 
+};
+
+class WorkerUdpThread : public QThread
+{
+    Q_OBJECT
+
+public:
+    WorkerUdpThread(QObject *parent = nullptr);
+
+    void init(QUdpSocket *udpSocket,QHostAddress qHostAddress);
+
+protected:
+    void run();
+private:
+    QUdpSocket *udpSocket;//
+    QHostAddress qHostAddress;
+
+signals:
+    void sigResult();
 };
 
 #endif // UdpServerWidget_H
