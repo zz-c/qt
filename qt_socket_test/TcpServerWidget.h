@@ -7,6 +7,7 @@
 #include <QLineEdit>
 #include <QThread>
 #include <QTcpServer>
+#include <QTcpSocket>
 
 class TcpServerWidget : public QWidget
 {
@@ -15,6 +16,10 @@ public:
     explicit TcpServerWidget(QWidget *parent);
 
     void run();
+public slots:
+    void slotNewConnection();
+    void slotReadyRead();
+
 private:
     QLabel *infolabel;
     QLabel *countLabel;
@@ -22,6 +27,7 @@ private:
     QLineEdit *fileLineEdit;
 
     QTcpServer* m_server;
+    QTcpSocket* m_client;
 
 signals:
 
@@ -34,9 +40,12 @@ class WorkerThread : public QThread
 public:
     WorkerThread(QObject *parent = nullptr);
 
+    void init(QTcpSocket* m_client);
 
 protected:
     void run();
+private:
+    QTcpSocket* m_client;
 
 signals:
     void sigResult();

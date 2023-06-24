@@ -5,7 +5,7 @@
 #include <QLineEdit>
 #include <QSettings>
 #include <QFileDialog>
-
+#include <QMessageBox>
 void TcpServerWidget::run(){
     while (true) {
         qDebug()<<"run";
@@ -21,7 +21,7 @@ TcpServerWidget::TcpServerWidget(QWidget *parent) : QWidget(parent)
 
     infolabel = new QLabel(this);
     infolabel->setStyleSheet(".QLabel{color:rgb(255,255,255);}");
-    infolabel->setText("TcpServer功能-开发中111111111111111/n2222222222222222222222");
+    infolabel->setText("选择文件并点击开始");
 
     countLabel = new QLabel(this);
     countLabel->setStyleSheet(".QLabel{color:rgb(0,0,0);font-family:Microsoft YaHei;font-size:14px;}");
@@ -78,9 +78,15 @@ TcpServerWidget::TcpServerWidget(QWidget *parent) : QWidget(parent)
             qDebug()<<"请选择文件"<<QDateTime::currentDateTime();;
             infolabel->setText("请选择文件");
         }
-        //std::thread thread(run,this);
-        WorkerThread *workthread = new WorkerThread(this);
-        workthread->start();
+        if(m_server == NULL){
+            m_server = new QTcpServer(this);
+            //将套接字设置为监听模式
+            m_server->listen(QHostAddress::Any, 9999);
+
+            //通过信号接收客户端请求
+            connect(m_server, &QTcpServer::newConnection, this, &TcpServerWidget::slotNewConnection);
+        }
+
     });
 
     recordHLayout->addWidget(fileNameLabel);
@@ -96,14 +102,58 @@ TcpServerWidget::TcpServerWidget(QWidget *parent) : QWidget(parent)
     mainVLayout->addStretch(50);
     mainVLayout->addWidget(recordWidget);
 }
+
+void TcpServerWidget::slotNewConnection(){
+    if(m_client == NULL){
+        //处理客户端的连接请求
+        m_client = m_server->nextPendingConnection();
+        //发送数据
+//        m_client->write("connect success!!!");
+//        m_client->flush();
+        //连接信号, 接收客户端数据
+        connect(m_client, &QTcpSocket::readyRead,this, &TcpServerWidget::slotReadyRead);
+        //this->start();
+
+        WorkerThread *workthread = new WorkerThread(this);
+        workthread->init(m_client);
+        workthread->start();
+
+//        int n =0;
+//        while(n<10){
+//            qDebug()<<n<<"WorkerThread zzrun: threadId: "<<QThread::currentThreadId();
+//            m_client->write("connect success2222!!!");
+//            m_client->flush();
+//            n++;
+//            QThread::msleep(1000);
+//        }
+    }
+}
+
+
+void TcpServerWidget::slotReadyRead(){
+    //接收数据
+    QByteArray array = m_client->readAll();
+    QMessageBox::information(this, "Client Message", array);
+}
+
 WorkerThread::WorkerThread(QObject *parent):QThread(parent){
 
 }
-
+void WorkerThread::init(QTcpSocket* m_client){
+    this->m_client = m_client;
+}
 void WorkerThread::run(){
     /*
      死循环，让线程一直跑。或者处理完毕就退出
      */
-    qDebug()<<"WorkerThread run: threadId: "<<QThread::currentThreadId();
+    int n =0;
+    while(n<10){
+        qDebug()<<n<<"WorkerThread zzrun: threadId: "<<QThread::currentThreadId();
+        this->m_client->write("connect successzz!!!");
+        m_client->flush();
+        n++;
+        QThread::msleep(1000);
+    }
+
     //emit sigResult();
 }
