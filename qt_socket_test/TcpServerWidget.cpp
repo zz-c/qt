@@ -75,10 +75,12 @@ TcpServerWidget::TcpServerWidget(QWidget *parent) : QWidget(parent)
     startBtn->setText("开始");
     connect(startBtn,&QPushButton::clicked,this,[this](){
         if(this->fileLineEdit->text().isEmpty()){
-            qDebug()<<"请选择文件";
+            qDebug()<<"请选择文件"<<QDateTime::currentDateTime();;
             infolabel->setText("请选择文件");
         }
         //std::thread thread(run,this);
+        WorkerThread *workthread = new WorkerThread(this);
+        workthread->start();
     });
 
     recordHLayout->addWidget(fileNameLabel);
@@ -93,4 +95,15 @@ TcpServerWidget::TcpServerWidget(QWidget *parent) : QWidget(parent)
     mainVLayout->addWidget(countLabel);
     mainVLayout->addStretch(50);
     mainVLayout->addWidget(recordWidget);
+}
+WorkerThread::WorkerThread(QObject *parent):QThread(parent){
+
+}
+
+void WorkerThread::run(){
+    /*
+     死循环，让线程一直跑。或者处理完毕就退出
+     */
+    qDebug()<<"WorkerThread run: threadId: "<<QThread::currentThreadId();
+    //emit sigResult();
 }

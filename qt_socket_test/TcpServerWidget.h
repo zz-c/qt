@@ -5,6 +5,8 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QLineEdit>
+#include <QThread>
+#include <QTcpServer>
 
 class TcpServerWidget : public QWidget
 {
@@ -19,8 +21,25 @@ private:
     QPushButton *startBtn;
     QLineEdit *fileLineEdit;
 
+    QTcpServer* m_server;
+
 signals:
 
+};
+
+class WorkerThread : public QThread
+{
+    Q_OBJECT
+
+public:
+    WorkerThread(QObject *parent = nullptr);
+
+
+protected:
+    void run();
+
+signals:
+    void sigResult();
 };
 
 #endif // TcpServerWidget_H
