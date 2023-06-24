@@ -7,7 +7,10 @@
 
 class TcpServerWidget;
 class TcpClientWidget;
-
+class UdpServerWidget;
+class UdpClientWidget;
+class Udp2ServerWidget;
+class Udp2ClientWidget;
 
 
 namespace Ui {
@@ -46,7 +49,10 @@ private:
     QStackedWidget *rightStackedWidget;
     TcpServerWidget *tcpServerWidget;
     TcpClientWidget *tcpClientWidget;
-
+    UdpServerWidget *udpServerWidget;
+    UdpClientWidget *udpClientWidget;
+    Udp2ServerWidget *udp2ServerWidget;
+    Udp2ClientWidget *udp2ClientWidget;
 
 };
 

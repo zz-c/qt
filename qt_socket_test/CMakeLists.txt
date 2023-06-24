@@ -28,6 +28,14 @@ set(PROJECT_SOURCES
         TcpServerWidget.cpp
         TcpClientWidget.h
         TcpClientWidget.cpp
+        UdpServerWidget.h
+        UdpServerWidget.cpp
+        UdpClientWidget.h
+        UdpClientWidget.cpp
+        Udp2ServerWidget.h
+        Udp2ServerWidget.cpp
+        Udp2ClientWidget.h
+        Udp2ClientWidget.cpp
         res.qrc
 )
 #include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)

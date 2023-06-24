@@ -1,17 +1,17 @@
-﻿#ifndef VNCSERVERWIDGET_H
-#define VNCSERVERWIDGET_H
+﻿#ifndef UdpClientWidget_H
+#define UdpClientWidget_H
 
 #include <QWidget>
 
 
-class VNCServerWidget : public QWidget
+class UdpClientWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit VNCServerWidget(QWidget *parent);
+    explicit UdpClientWidget(QWidget *parent);
 
 signals:
 
 };
 
-#endif // VNCSERVERWIDGET_H
+#endif // UdpClientWidget_H

@@ -8,6 +8,10 @@
 
 #include "TcpServerWidget.h"
 #include "TcpClientWidget.h"
+#include "UdpServerWidget.h"
+#include "UdpClientWidget.h"
+#include "Udp2ServerWidget.h"
+#include "Udp2ClientWidget.h"
 
 #include "About.h"
 
@@ -82,15 +86,56 @@ QWidget* IndexWidget::initLeftWidget(){
         tcpServerBtn->setStyleSheet(left_btn_no_background_selected);
         tcpClientBtn->setStyleSheet(left_btn_no_background);
         udpServerBtn->setStyleSheet(left_btn_no_background);
+        udpClientBtn->setStyleSheet(left_btn_no_background);
+        udp2ServerBtn->setStyleSheet(left_btn_no_background);
+        udp2ClientBtn->setStyleSheet(left_btn_no_background);
         this->rightStackedWidget->setCurrentWidget(tcpServerWidget);
     });
     connect(tcpClientBtn,&QPushButton::clicked,this,[this](){
         tcpServerBtn->setStyleSheet(left_btn_no_background);
         tcpClientBtn->setStyleSheet(left_btn_no_background_selected);
         udpServerBtn->setStyleSheet(left_btn_no_background);
+        udpClientBtn->setStyleSheet(left_btn_no_background);
+        udp2ServerBtn->setStyleSheet(left_btn_no_background);
+        udp2ClientBtn->setStyleSheet(left_btn_no_background);
         this->rightStackedWidget->setCurrentWidget(tcpClientWidget);
     });
-
+    connect(udpServerBtn,&QPushButton::clicked,this,[this](){
+        tcpServerBtn->setStyleSheet(left_btn_no_background);
+        tcpClientBtn->setStyleSheet(left_btn_no_background);
+        udpServerBtn->setStyleSheet(left_btn_no_background_selected);
+        udpClientBtn->setStyleSheet(left_btn_no_background);
+        udp2ServerBtn->setStyleSheet(left_btn_no_background);
+        udp2ClientBtn->setStyleSheet(left_btn_no_background);
+        this->rightStackedWidget->setCurrentWidget(udpServerWidget);
+    });
+    connect(udpClientBtn,&QPushButton::clicked,this,[this](){
+        tcpServerBtn->setStyleSheet(left_btn_no_background);
+        tcpClientBtn->setStyleSheet(left_btn_no_background);
+        udpServerBtn->setStyleSheet(left_btn_no_background);
+        udpClientBtn->setStyleSheet(left_btn_no_background_selected);
+        udp2ServerBtn->setStyleSheet(left_btn_no_background);
+        udp2ClientBtn->setStyleSheet(left_btn_no_background);
+        this->rightStackedWidget->setCurrentWidget(udpClientWidget);
+    });
+    connect(udp2ServerBtn,&QPushButton::clicked,this,[this](){
+        tcpServerBtn->setStyleSheet(left_btn_no_background);
+        tcpClientBtn->setStyleSheet(left_btn_no_background);
+        udpServerBtn->setStyleSheet(left_btn_no_background);
+        udpClientBtn->setStyleSheet(left_btn_no_background);
+        udp2ServerBtn->setStyleSheet(left_btn_no_background_selected);
+        udp2ClientBtn->setStyleSheet(left_btn_no_background);
+        this->rightStackedWidget->setCurrentWidget(udp2ServerWidget);
+    });
+    connect(udp2ClientBtn,&QPushButton::clicked,this,[this](){
+        tcpServerBtn->setStyleSheet(left_btn_no_background);
+        tcpClientBtn->setStyleSheet(left_btn_no_background);
+        udpServerBtn->setStyleSheet(left_btn_no_background);
+        udpClientBtn->setStyleSheet(left_btn_no_background);
+        udp2ServerBtn->setStyleSheet(left_btn_no_background);
+        udp2ClientBtn->setStyleSheet(left_btn_no_background_selected);
+        this->rightStackedWidget->setCurrentWidget(udp2ClientWidget);
+    });
     // 文件菜单
     QMenu *settingsMenu = new QMenu(this);
 
@@ -158,8 +203,16 @@ QWidget* IndexWidget::initRightWidget(){
 
     tcpServerWidget = new TcpServerWidget(this);
     tcpClientWidget = new TcpClientWidget(this);
+    udpServerWidget = new UdpServerWidget(this);
+    udpClientWidget = new UdpClientWidget(this);
+    udp2ServerWidget = new Udp2ServerWidget(this);
+    udp2ClientWidget = new Udp2ClientWidget(this);
     rightStackedWidget->addWidget(tcpServerWidget);
     rightStackedWidget->addWidget(tcpClientWidget);
+    rightStackedWidget->addWidget(udpServerWidget);
+    rightStackedWidget->addWidget(udpClientWidget);
+    rightStackedWidget->addWidget(udp2ServerWidget);
+    rightStackedWidget->addWidget(udp2ClientWidget);
 
     rightStackedWidget->setCurrentWidget(tcpServerWidget);
     // StackedWidget end
