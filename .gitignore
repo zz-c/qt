@@ -1,2 +1,4 @@
 SRE/
 build*/
+*.pro.user
+*.txt.user
